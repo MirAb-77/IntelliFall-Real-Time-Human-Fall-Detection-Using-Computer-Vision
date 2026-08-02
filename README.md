@@ -1,205 +1,201 @@
-# IntelliFall-Real-Time-Human-Fall-Detection-Using-YOLO-Based-Computer-Vision
+<div align="center">
 
+# 🚨 IntelliFall
 
-This project implements a real-time fall detection system using the YOLO (You Only Look Once) deep learning framework. Our goal is to accurately detect fall events from video streams in real-time, making the system applicable in environments such as elderly care, hospitals, or public surveillance.
+### Real-Time Human Fall Detection Using YOLO-Based Computer Vision
 
----
+[![Python](https://img.shields.io/badge/Python-3.7%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![YOLOv11](https://img.shields.io/badge/YOLOv11-Ultralytics-00FFFF?style=for-the-badge&logo=yolo&logoColor=black)](https://docs.ultralytics.com/models/yolo11/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](#license)
 
-## Table of Contents
+*A real-time, deep learning–powered fall detection system built for elderly care, hospitals, and public safety monitoring.*
 
-- [Overview](#overview)
-- [Motivation](#motivation)
-- [Project Architecture](#project-architecture)
-- [Datasets](#datasets)
-- [Model Details](#model-details)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Training](#training)
-- [Evaluation](#evaluation)
-- [Future Work](#future-work)
-- [References](#references)
-- [Acknowledgements](#acknowledgements)
+[Overview](#-overview) • [Architecture](#-project-architecture) • [Installation](#-installation) • [Usage](#-usage) • [Training](#-training) • [Roadmap](#-future-work)
+
+</div>
 
 ---
 
-## Overview
+## 📌 Overview
 
-This fall detection system leverages the power of YOLO—one of the most popular real-time object detection models—to identify falls in video frames. By fine-tuning YOLOv11 on the LE2I dataset (among other sources), the model is designed to distinguish between fall and non-fall activities with high recall and precision. The system processes video input, detects human figures, and determines if a fall event has occurred, alerting caregivers or logging the event for further analysis.
+**IntelliFall** is a real-time fall detection system built on **YOLOv11**, one of the fastest and most accurate object detection architectures available. Fine-tuned on the **LE2I dataset**, the model localizes human subjects in a video stream and flags fall events with high precision and recall — enabling faster caregiver response and reduced injury risk in monitored environments.
 
----
-
-## Motivation
-
-Falls are one of the leading causes of injury, especially among the elderly. Early detection and rapid response can significantly reduce the risk of severe injury. This project aims to:
-- Improve real-time fall detection accuracy using state-of-the-art object detection techniques.
-- Provide a scalable solution that can be deployed in healthcare settings, public spaces, and assisted living environments.
-- Serve as a foundation for future research into integrating additional modalities (e.g., sensor data, behavioral analysis) into fall detection systems.
+| Capability | Description |
+|---|---|
+| 🎥 **Real-time inference** | Runs on live webcam or recorded video streams |
+| 🧠 **Fine-tuned YOLOv11** | Adapted from general object detection to fall-specific classification |
+| ⚡ **Low-latency alerts** | Logs and flags fall events as they happen |
+| 🏥 **Deployment-ready** | Designed for elderly care facilities, hospitals, and public surveillance |
 
 ---
 
-## Project Architecture
+## 💡 Motivation
 
-The system is composed of the following components:
-- **Video Input Module**: Captures real-time video feed from cameras.
-- **Preprocessing Pipeline**: Resizes and normalizes video frames.
-- **YOLO-based Object Detection**: Uses YOLOv11 to detect human figures and localize them with bounding boxes.
-- **Fall Classification**: Applies additional logic or post-processing to distinguish between fall events and other activities.
-- **Alert/Logging Module**: Records the detected events or sends alerts to caregivers.
+Falls are one of the leading causes of injury among the elderly, and response time is critical to minimizing harm. This project exists to:
 
-### Workflow Diagram
+- 🎯 Improve real-time fall detection accuracy using state-of-the-art object detection
+- 🏗️ Provide a scalable solution deployable across healthcare and assisted-living environments
+- 🔬 Serve as a foundation for multi-modal fall detection research (video + sensor + behavioral data)
 
-```
-+--------------------+       +-------------------+      +----------------------+
-| Video Input Module | ----> | Preprocessing &   | ---> | YOLOv11 Object       |
-| (Cameras/Feed)     |       | Data Augmentation |      | Detection            |
-+--------------------+       +-------------------+      +----------------------+
-                                                       |
-                                                       v
-                                         +----------------------------+
-                                         | Fall Classification Logic  |
-                                         | (Bounding Box Analysis,    |
-                                         | Confidence Scoring, etc.)  |
-                                         +----------------------------+
-                                                       |
-                                                       v
-                                        +-----------------------------+
-                                        | Attendance/Alert Logging    |
-                                        | (Database, SMS/Email Alerts)|
-                                        +-----------------------------+
+---
+
+## 🏗️ Project Architecture
+
+The pipeline moves from raw video capture through detection to alerting in five stages:
+
+```mermaid
+flowchart TD
+    A["🎥 Video Input Module<br/>(Camera / Video Feed)"] --> B["🧹 Preprocessing & Augmentation<br/>(Resize, Normalize)"]
+    B --> C["🧠 YOLOv11 Object Detection<br/>(Human Localization)"]
+    C --> D["📉 Fall Classification Logic<br/>(Bounding Box Analysis + Confidence Scoring)"]
+    D --> E["🔔 Alert & Logging Module<br/>(Database / SMS / Email)"]
+
+    style A fill:#1f6feb,color:#fff,stroke:#0d47a1
+    style B fill:#238636,color:#fff,stroke:#1a6b2b
+    style C fill:#8957e5,color:#fff,stroke:#5e2fb0
+    style D fill:#d29922,color:#fff,stroke:#9a6b12
+    style E fill:#da3633,color:#fff,stroke:#8f221f
 ```
 
+| Module | Role |
+|---|---|
+| **Video Input** | Captures real-time feed from cameras or file input |
+| **Preprocessing** | Resizes, normalizes, and augments incoming frames |
+| **YOLOv11 Detection** | Localizes humans with bounding boxes |
+| **Fall Classification** | Analyzes box geometry, motion, and confidence to flag falls |
+| **Alert/Logging** | Persists events and triggers notifications |
+
 ---
 
-## Datasets
+## 📊 Datasets
 
 ### LE2I Dataset
-- **Description**: The LE2I dataset is specifically designed for fall detection. It contains videos of real-life fall scenarios recorded from multiple angles, providing annotated data for both fall and non-fall activities.
-- **Usage**: We fine-tuned YOLOv11 using this dataset to capture the variability of fall events in different conditions.
-- **Link**: [LE2I Dataset](https://universe.roboflow.com/le2iahlam/le2i-ahlam/model/1)
+Real-life fall scenarios recorded from multiple camera angles, with annotated fall and non-fall activity — used to fine-tune YOLOv11 for the variability of real fall events.
 
-### Additional Datasets (Optional)
-- **Fall Detection Dataset (IMVIA)**: Contains sensor-based data that can be useful for multi-modal approaches.
-- **UCF Fall Detection Dataset**: A collection of videos simulating falls in various settings.
+🔗 [LE2I Dataset on Roboflow](https://universe.roboflow.com/le2iahlam/le2i-ahlam/model/1)
 
----
-
-## Model Details
-
-The YOLOv11 model used in this project is fine-tuned to detect falls with high recall and precision. Key aspects include:
-
-- **Box Loss**: Optimizes the bounding box regression by comparing predicted boxes with ground truth using metrics such as CIoU or GIoU.
-- **Class Loss**: Ensures the correct classification of detected objects (fall vs. non-fall) using techniques like Binary Cross-Entropy or Focal Loss.
-- **Distribution Focal Loss (DFL)**: Refines the localization by predicting a probability distribution over possible bounding box coordinates.
-- **Fine-Tuning**: We adjust the model weights using the LE2I dataset to adapt YOLOv11’s general object detection capabilities to the specialized task of fall detection.
+### Supplementary Datasets
+| Dataset | Type | Use Case |
+|---|---|---|
+| IMVIA Fall Detection Dataset | Sensor-based | Multi-modal fusion research |
+| UCF Fall Detection Dataset | Video | Simulated falls across varied environments |
 
 ---
 
-## Installation
+## 🧠 Model Details
+
+| Loss Component | Purpose |
+|---|---|
+| **Box Loss (CIoU/GIoU)** | Optimizes bounding box regression accuracy |
+| **Class Loss (BCE/Focal)** | Ensures correct fall vs. non-fall classification |
+| **Distribution Focal Loss (DFL)** | Refines localization via probability distribution over box coordinates |
+
+Fine-tuning adapts YOLOv11's general-purpose detection weights to the specialized task of identifying fall postures and motion patterns from the LE2I dataset.
+
+---
+
+## ⚙️ Installation
 
 ### Prerequisites
-- Python 3.7 or later
-- PyTorch (version compatible with your YOLO implementation)
-- OpenCV
-- Other dependencies as listed in `requirements.txt`
+- 🐍 Python 3.7+
+- 🔥 PyTorch (version matching your YOLO build)
+- 📷 OpenCV
+- 📦 Remaining dependencies in `requirements.txt`
 
 ### Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/fall-detection-yolo.git
-   cd fall-detection-yolo
-   ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/intellifall.git
+cd intellifall
 
-2. **Create a virtual environment and install dependencies:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+# 2. Create a virtual environment
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
 
-3. **Download Pre-trained Weights:**
-   - Download YOLOv11 weights from [Ultralytics](https://docs.ultralytics.com/models/yolo11/) or your specified source.
-   - Place the weights file in the designated folder (e.g., `./weights/`).
+# 3. Install dependencies
+pip install -r requirements.txt
+```
+
+**Download pre-trained weights** from [Ultralytics YOLOv11](https://docs.ultralytics.com/models/yolo11/) and place them in `./weights/`.
 
 ---
 
-## Usage
+## 🚀 Usage
 
-### Running the Detection System
+### Real-Time Detection (Webcam)
+```bash
+python detect.py --source 0 --weights ./weights/yolo11n.pt --conf 0.4
+```
 
-1. **Real-time Detection:**
-   ```bash
-   python detect.py --source 0 --weights ./weights/yolo11n.pt --conf 0.4
-   ```
-   - `--source 0` uses the webcam.
-   - Adjust the `--conf` threshold as needed.
+### Batch Processing (Video File)
+```bash
+python detect.py --source path/to/video.mp4 --weights ./weights/yolo11n.pt --conf 0.4
+```
 
-2. **Batch Processing of Video Files:**
-   ```bash
-   python detect.py --source path/to/video.mp4 --weights ./weights/yolo11n.pt --conf 0.4
-   ```
-
-3. **Logging Attendance/Alerts:**
-   - The system logs each detection event along with a timestamp.
-   - Modify the logging module to connect to your database or messaging service.
+### Alert Logging
+Each detection event is logged with a timestamp — connect the logging module to your own database or messaging service for production alerts.
 
 ---
 
-## Training
+## 🏋️ Training
 
-To fine-tune the model on your dataset:
+**1. Prepare your data**
+Annotate in YOLO format and organize your dataset directory per the training script's expected structure.
 
-1. **Data Preparation:**
-   - Annotate your dataset using YOLO annotation format.
-   - Organize your dataset folder structure as required by the training script.
+**2. Fine-tune**
+```bash
+python train.py --data data.yaml --weights ./weights/yolo11.pt --epochs 50 --batch-size 16
+```
 
-2. **Run Training:**
-   ```bash
-   python train.py --data data.yaml --weights ./weights/yolo11.pt --epochs 50 --batch-size 16
-   ```
-   - Ensure your `data.yaml` file correctly points to your training and validation data.
-
-3. **Monitor Training:**
-   - Use TensorBoard or similar tools to track loss metrics and model performance.
+**3. Monitor**
+Track loss curves and metrics with TensorBoard.
 
 ---
 
-## Evaluation
+## 📈 Evaluation
 
-After training, evaluate the model using:
 ```bash
 python val.py --data data.yaml --weights runs/train/exp/weights/best.pt
 ```
-Key metrics include:
-- Accuracy
-- Sensitivity
-- Specificity
-- Precision & Recall
 
-These metrics help you understand how well the model distinguishes fall events from normal activities.
-
----
-
-## Future Work
-
-- **Multi-modal Integration**: Combine video data with sensor inputs for robust fall detection.
-- **Edge Deployment**: Optimize and deploy the model on edge devices for real-time applications in hospitals or care facilities.
-- **User Interface**: Develop a web or mobile application to monitor real-time fall detection and manage attendance logs.
-- **Additional Features**: Integrate mask detection, action recognition, and behavior analysis for enhanced safety monitoring.
+| Metric | What It Measures |
+|---|---|
+| Accuracy | Overall correctness of predictions |
+| Sensitivity (Recall) | Ability to catch true fall events |
+| Specificity | Ability to avoid false alarms |
+| Precision | Reliability of positive (fall) predictions |
 
 ---
 
-## References
+## 🔮 Future Work
 
-1. **LE2I Dataset**: [LE2I Fall Detection Dataset](https://universe.roboflow.com/le2iahlam/le2i-ahlam/model/1)
-2. **YOLOv11 Documentation**: [Ultralytics YOLOv11](https://docs.ultralytics.com/models/yolo11/)
-3. **YOLOv8 Information**: [YOLOv8](https://yolov8.com/)
-4. Additional literature on loss functions (Box Loss, Class Loss, Distribution Focal Loss) and fine-tuning methods for object detection.
+- [ ] 🔗 **Multi-modal fusion** — combine video with wearable sensor data
+- [ ] 📡 **Edge deployment** — optimize for real-time inference on edge devices (Jetson, Coral)
+- [ ] 🖥️ **Monitoring dashboard** — web/mobile UI for live alerts and history
+- [ ] 🕺 **Action recognition** — extend beyond falls to broader behavior/safety monitoring
+
+---
+
+## 📚 References
+
+1. [LE2I Fall Detection Dataset](https://universe.roboflow.com/le2iahlam/le2i-ahlam/model/1)
+2. [Ultralytics YOLOv11 Documentation](https://docs.ultralytics.com/models/yolo11/)
+3. [YOLOv8 Reference](https://yolov8.com/)
+4. Literature on Box/Class/Distribution Focal Loss and fine-tuning strategies for object detection
 
 ---
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
-We acknowledge the contributions of the research community in advancing object detection technologies and thank the maintainers of the LE2I dataset, YOLO frameworks, and associated libraries. Special thanks to our advisors and collaborators who provided feedback during the development of this project.
+Thanks to the research community advancing object detection, the maintainers of the LE2I dataset and YOLO frameworks, and the advisors and collaborators who supported this project's development.
+
+<div align="center">
 
 ---
+
+**⭐ If this project helped you, consider giving it a star!**
+
+</div>
