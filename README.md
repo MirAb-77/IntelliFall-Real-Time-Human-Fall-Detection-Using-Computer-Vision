@@ -24,10 +24,10 @@
 
 | Capability | Description |
 |---|---|
-| 🎥 **Real-time inference** | Runs on live webcam or recorded video streams |
-| 🧠 **Fine-tuned YOLOv11** | Adapted from general object detection to fall-specific classification |
-| ⚡ **Low-latency alerts** | Logs and flags fall events as they happen |
-| 🏥 **Deployment-ready** | Designed for elderly care facilities, hospitals, and public surveillance |
+|  **Real-time inference** | Runs on live webcam or recorded video streams |
+| **Fine-tuned YOLOv11** | Adapted from general object detection to fall-specific classification |
+| **Low-latency alerts** | Logs and flags fall events as they happen |
+| **Deployment-ready** | Designed for elderly care facilities, hospitals, and public surveillance |
 
 ---
 
@@ -35,9 +35,9 @@
 
 Falls are one of the leading causes of injury among the elderly, and response time is critical to minimizing harm. This project exists to:
 
-- 🎯 Improve real-time fall detection accuracy using state-of-the-art object detection
-- 🏗️ Provide a scalable solution deployable across healthcare and assisted-living environments
-- 🔬 Serve as a foundation for multi-modal fall detection research (video + sensor + behavioral data)
+-  Improve real-time fall detection accuracy using state-of-the-art object detection
+-  Provide a scalable solution deployable across healthcare and assisted-living environments
+-  Serve as a foundation for multi-modal fall detection research (video + sensor + behavioral data)
 
 ---
 
@@ -47,10 +47,10 @@ The pipeline moves from raw video capture through detection to alerting in five 
 
 ```mermaid
 flowchart TD
-    A["🎥 Video Input Module<br/>(Camera / Video Feed)"] --> B["🧹 Preprocessing & Augmentation<br/>(Resize, Normalize)"]
-    B --> C["🧠 YOLOv11 Object Detection<br/>(Human Localization)"]
-    C --> D["📉 Fall Classification Logic<br/>(Bounding Box Analysis + Confidence Scoring)"]
-    D --> E["🔔 Alert & Logging Module<br/>(Database / SMS / Email)"]
+    A[" Video Input Module<br/>(Camera / Video Feed)"] --> B["🧹 Preprocessing & Augmentation<br/>(Resize, Normalize)"]
+    B --> C[" YOLOv11 Object Detection<br/>(Human Localization)"]
+    C --> D[" Fall Classification Logic<br/>(Bounding Box Analysis + Confidence Scoring)"]
+    D --> E[" Alert & Logging Module<br/>(Database / SMS / Email)"]
 
     style A fill:#1f6feb,color:#fff,stroke:#0d47a1
     style B fill:#238636,color:#fff,stroke:#1a6b2b
@@ -99,10 +99,10 @@ Fine-tuning adapts YOLOv11's general-purpose detection weights to the specialize
 ## ⚙️ Installation
 
 ### Prerequisites
-- 🐍 Python 3.7+
-- 🔥 PyTorch (version matching your YOLO build)
-- 📷 OpenCV
-- 📦 Remaining dependencies in `requirements.txt`
+-  Python 3.7+
+-  PyTorch (version matching your YOLO build)
+-  OpenCV
+-  Remaining dependencies in `requirements.txt`
 
 ### Setup
 
@@ -172,10 +172,10 @@ python val.py --data data.yaml --weights runs/train/exp/weights/best.pt
 
 ## 🔮 Future Work
 
-- [ ] 🔗 **Multi-modal fusion** — combine video with wearable sensor data
-- [ ] 📡 **Edge deployment** — optimize for real-time inference on edge devices (Jetson, Coral)
-- [ ] 🖥️ **Monitoring dashboard** — web/mobile UI for live alerts and history
-- [ ] 🕺 **Action recognition** — extend beyond falls to broader behavior/safety monitoring
+- [ ]  **Multi-modal fusion** — combine video with wearable sensor data
+- [ ]  **Edge deployment** — optimize for real-time inference on edge devices (Jetson, Coral)
+- [ ]  **Monitoring dashboard** — web/mobile UI for live alerts and history
+- [ ]  **Action recognition** — extend beyond falls to broader behavior/safety monitoring
 
 ---
 
